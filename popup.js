@@ -54,13 +54,6 @@ function createTabItem(tab, onTabSelect, onGoToTab, onTabClose) {
   return tabItem;
 }
 
-// const testTab = {
-//   id: 1,
-//   favIconUrl: "https://www.google.com/favicon.ico",
-//   title: "Google",
-//   url: "https://www.google.com",
-// };
-
 document.addEventListener("DOMContentLoaded", function () {
   const tabsList = document.getElementById("tabsList");
   const searchInput = document.getElementById("search");
@@ -68,17 +61,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const multiSelectActions = document.getElementById("multiSelectActions");
   const copySelectedBtn = document.getElementById("copySelected");
   const closeSelectedBtn = document.getElementById("closeSelected");
+  const selectedCount = document.getElementById("selectedCount");
 
   let multiSelectMode = true;
-  // const selectedTabs = new Set();
   let selectedTabs = [];
 
   function updateMultiSelectActions() {
-    if (selectedTabs.size > 0) {
+    if (selectedTabs.length > 0) {
       multiSelectActions.style.display = "block";
+      tabsList.style.paddingTop = "148px";
     } else {
       multiSelectActions.style.display = "none";
+      tabsList.style.paddingTop = "102px";
     }
+    selectedCount.textContent = `${selectedTabs.length} selected`;
   }
 
   const closeTab = (tabId) => {
@@ -104,32 +100,23 @@ document.addEventListener("DOMContentLoaded", function () {
         window.close();
       };
 
+      const handleTabSelect = (e) => {
+        if (e.target.checked) {
+          selectedTabs.push(tab.id);
+        } else {
+          selectedTabs = selectedTabs.filter((id) => id !== tab.id);
+        }
+        updateMultiSelectActions();
+      };
+
       const tabItem = createTabItem(
         tab,
-        () => {},
+        handleTabSelect,
         handleGoToTab,
         handleTabClose
       );
 
       tabsList.appendChild(tabItem);
-
-      // let checkbox = document.createElement("input");
-      // checkbox.type = "checkbox";
-      // checkbox.dataset.tabId = tab.id; // Store the tab ID on the checkbox
-      // checkbox.onchange = (e) => {
-      //   if (e.target.checked) {
-      //     selectedTabs.add(parseInt(e.target.dataset.tabId)); // Ensure the tab ID is stored as an integer
-      //   } else {
-      //     selectedTabs.delete(parseInt(e.target.dataset.tabId));
-      //   }
-      //   updateMultiSelectActions();
-      // };
-
-      // listItem.appendChild(checkbox);
-      // listItem.innerHTML += `<strong>${tab.title}</strong> - <a href="${tab.url}" target="_blank">${tab.url}</a> `;
-      // listItem.appendChild(closeButton);
-
-      // tabsList.appendChild(listItem);
     }
   }
 
@@ -149,11 +136,14 @@ document.addEventListener("DOMContentLoaded", function () {
   copySelectedBtn.addEventListener("click", () => {
     browser.tabs.query({}).then((tabs) => {
       let selectedUrls = tabs
-        .filter((tab) => selectedTabs.has(tab.id))
+        .filter((tab) => selectedTabs.includes(tab.id))
         .map((tab) => tab.url)
-        .join("\n");
+        .join(", ");
       navigator.clipboard.writeText(selectedUrls).then(() => {
-        alert("Selected URLs copied to clipboard!");
+        copySelectedBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copySelectedBtn.textContent = "Copy tabs";
+        }, 3000);
       });
     });
   });
@@ -161,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeSelectedBtn.addEventListener("click", () => {
     browser.tabs.remove([...selectedTabs]).then(() => {
       // Clear the set and hide actions
-      selectedTabs.clear();
+      selectedTabs = [];
       updateMultiSelectActions();
 
       // Refresh the tabs list

@@ -16,12 +16,14 @@
           spellcheck="false"
         />
       </div>
-      <p id="count">0 tabs</p>
-    </div>
-
-    <div id="multiSelectActions" style="display: none">
-      <button id="copySelected">Copy Selected URLs</button>
-      <button id="closeSelected">Close Selected Tabs</button>
+      <div id="multiSelectActions">
+        <button id="copySelected" class="basicButton">Copy URLs</button>
+        <button id="closeSelected" class="basicButton">Close tabs</button>
+      </div>
+      <p class="count">
+        <span id="count">0 tabs</span>,
+        <span id="selectedCount">0 selected</span>
+      </p>
     </div>
 
     <ul id="tabsList">
