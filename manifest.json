@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Tab manager",
+  "version": "1.0",
+  "description": "View and close multiple tabs at once.",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/icon-48.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["clipboardWrite", "tabs"]
+}
