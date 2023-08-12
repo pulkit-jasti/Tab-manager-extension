@@ -41,6 +41,7 @@ function createTabItem(tab, onTabSelect, onGoToTab, onTabClose) {
 
   const closeTabButton = document.createElement("button");
   closeTabButton.setAttribute("class", "tabButton");
+  closeTabButton.setAttribute("id", "closeButton");
   closeTabButton.appendChild(closeTabImage);
   closeTabButton.onclick = onTabClose;
   topWrapper.appendChild(closeTabButton);

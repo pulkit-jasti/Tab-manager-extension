@@ -73,7 +73,7 @@ body {
   border-radius: 5px;
 
   display: flex;
-  gap: 10px;
+  gap: 16px;
 }
 
 .listItem input {
@@ -136,6 +136,14 @@ body {
 
 .tabButton img {
   height: 100%;
+}
+
+#closeButton {
+  padding: 8px;
+}
+
+#closeButton img {
+  transform: translateY(-2px);
 }
 
 #multiSelectActions {
