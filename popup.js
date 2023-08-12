@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateMultiSelectActions() {
     if (selectedTabs.length > 0) {
-      multiSelectActions.style.display = "block";
+      multiSelectActions.style.display = "flex";
       tabsList.style.paddingTop = "148px";
     } else {
       multiSelectActions.style.display = "none";
